@@ -21,7 +21,7 @@ public class ModificarClients {
      * @param c
      * @throws IOException 
      */
-    static void Modificar_Client(Main.Client c) throws IOException {
+    /*static void Modificar_Client(Main.Client c) throws IOException {
         int esborrar = utils.LlegirInt("Quin client vols esborrar: ");
         final String ADRECA_AUX = "./auxiliar.dat";
         File f = new File(ADRECA_AUX);
@@ -37,7 +37,7 @@ public class ModificarClients {
      * @param adreca
      * @throws IOException 
      */
-    static void CopiantIEsborrant(int codiEsborrar, Main.Client c, String adreca) throws IOException {
+    /*static void CopiantIEsborrant(int codiEsborrar, Main.Client c, String adreca) throws IOException {
         FileInputStream fis = new FileInputStream(Main.ADRECA);
         DataInputStream dis = new DataInputStream(fis);
         try{
@@ -54,5 +54,5 @@ public class ModificarClients {
         }catch(EOFException e){
             //Final fitxer
         }
-    }
+    }*/
 }

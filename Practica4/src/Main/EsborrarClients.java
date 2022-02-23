@@ -25,7 +25,7 @@ public class EsborrarClients {
         final String ADRECA_AUX = "./auxiliar.dat";
         File f = new File(ADRECA_AUX);
         f.createNewFile();
-        CopiantIEsborrant(esborrar, c, ADRECA_AUX);
+        /*CopiantIEsborrant(esborrar, c, ADRECA_AUX);*/
         Main.Renombrar(Main.ADRECA, f);
     }
 
@@ -36,7 +36,7 @@ public class EsborrarClients {
      * @param adreca
      * @throws IOException 
      */
-    static void CopiantIEsborrant(int codiEsborrar, Main.Client c, String adreca) throws IOException {
+    /*static void CopiantIEsborrant(int codiEsborrar, Main.Client c, String adreca) throws IOException {
         FileInputStream fis = new FileInputStream(Main.ADRECA);
         DataInputStream dis = new DataInputStream(fis);
         try{
@@ -49,5 +49,5 @@ public class EsborrarClients {
         }catch(EOFException e){
             //Final fitxer
         }
-    }
+    }*/
 }

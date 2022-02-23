@@ -22,7 +22,8 @@ import java.text.ParseException;
  */
 public class Main {
 
-    static final String ADRECA = "./clients.dat";
+    public static final String ADRECA = "./clients.dat";
+    public static final String ADRECA_INDEX = "./index.dat";
 
 
     static class Client {
@@ -46,6 +47,7 @@ public class Main {
     public static void main(String[] args) throws ParseException, IOException{
         Client c = new Client();
         files.IfNotExistCreateFile(ADRECA);
+        files.IfNotExistCreateFile(ADRECA_INDEX);
         int opc;
         do {
             imprimirMenu();
@@ -63,6 +65,7 @@ public class Main {
         System.out.println("4- Modificar un client");
         System.out.println("5- Esborrar client");
         System.out.println("6- Llistar tots els clients");
+        System.out.println("7- Llistar tots els clients ordenats per codi");
     }
     
     /**
@@ -73,12 +76,12 @@ public class Main {
      * @throws IOException 
      */
     private static int elegirOpc(Client c) throws ParseException, IOException {
-        int opc = utils.LlegirIntLimitat("Escull una opció: ", 0, 6);
+        int opc = utils.LlegirIntLimitat("Escull una opció: ", 0, 7);
         switch (opc) {
             case 0:
                 System.out.println("Tancant programa...");
                 break;
-            case 1:
+            /*case 1:
                 InserirClients.Dades_Client(c);
                 InserirClients.Inserir(c, ADRECA);
                 break;
@@ -98,6 +101,9 @@ public class Main {
 
             case 6:
                 ConsultarClients.leerFichero(c);
+                break;*/
+            case 7:
+                AccesoAleatorio.Ordenar(c);
                 break;
         }
         return opc;

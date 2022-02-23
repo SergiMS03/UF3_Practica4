@@ -158,6 +158,13 @@ public class files {
         dos.close();
     }
     
+    public static void FileBinaryWriterLong(final String adress, long num, boolean dontOverwrite) throws IOException {
+        declare_FOS_DOS(adress, dontOverwrite);
+        dos.writeLong(num);
+        dos.flush();
+        dos.close();
+    }
+    
     public static void FileBinaryWriterString(final String adress, String message, boolean dontOverwrite) throws IOException {
         declare_FOS_DOS(adress, dontOverwrite);
         dos.writeUTF(message);
@@ -175,6 +182,12 @@ public class files {
     public static int FileBinaryReaderInt(final String adress, DataInputStream dis) throws IOException {
         //declare_FIS_DIS(adress);
         int readingInt = dis.readInt();
+        return readingInt;
+    }
+    
+    public static long FileBinaryReaderLong(final String adress, DataInputStream dis) throws IOException {
+        //declare_FIS_DIS(adress);
+        long readingInt = dis.readLong();
         return readingInt;
     }
     

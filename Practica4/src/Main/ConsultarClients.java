@@ -10,6 +10,7 @@ import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 /**
  *
@@ -21,7 +22,7 @@ public class ConsultarClients {
      * Pregunta el codi del client que es vol consultar
      * @throws IOException 
      */
-    static void Pregunta_Consulta_Codi(Main.Client c) throws IOException {
+    /*static void Pregunta_Consulta_Codi(Main.Client c) throws IOException {
         int codiConsulta = utils.LlegirInt("Quin es el codi que vols consultar: ");
         Consultar_Codi(codiConsulta, c);
         System.out.println("");
@@ -32,7 +33,7 @@ public class ConsultarClients {
      * @param c
      * @throws IOException 
      */
-    static void Pregunta_Consulta_Linea(Main.Client c) throws IOException {
+    /*static void Pregunta_Consulta_Linea(Main.Client c) throws IOException {
         int numClients = Cantidad_Clientes(c);
         if(numClients > 0){
             System.out.println(numClients + " lineas disponibles");
@@ -48,7 +49,7 @@ public class ConsultarClients {
      * @param codiConsulta
      * @throws IOException 
      */
-    static void Consultar_Codi(int codiConsulta, Main.Client c) throws IOException {
+/*    static void Consultar_Codi(int codiConsulta, Main.Client c) throws IOException {
         FileInputStream fis = new FileInputStream(Main.ADRECA);
         DataInputStream dis = new DataInputStream(fis);
         try{
@@ -70,7 +71,7 @@ public class ConsultarClients {
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    private static void Consultar_Linea(int lineaConsulta, Main.Client c) throws FileNotFoundException, IOException {
+/*    private static void Consultar_Linea(int lineaConsulta, Main.Client c) throws FileNotFoundException, IOException {
         FileInputStream fis = new FileInputStream(Main.ADRECA);
         DataInputStream dis = new DataInputStream(fis);
         try{
@@ -93,7 +94,7 @@ public class ConsultarClients {
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    static void leerFichero(Main.Client c) throws FileNotFoundException, IOException {
+/*    static void leerFichero(Main.Client c) throws FileNotFoundException, IOException {
         FileInputStream fis = new FileInputStream(Main.ADRECA);
         DataInputStream dis = new DataInputStream(fis);
         try{
@@ -105,7 +106,7 @@ public class ConsultarClients {
             //Final fitxer
         }
         System.out.println("");
-    }
+    }*/
 
     /**
      * Guarda a la clase clients cada camp consusultat a la seva respectiva variable
@@ -113,7 +114,9 @@ public class ConsultarClients {
      * @param dis
      * @throws IOException 
      */
-    static void Llegir_Camps_Clients(Main.Client c, DataInputStream dis) throws IOException {
+    static void Llegir_Camps_Clients(Main.Client c, DataInputStream dis, long inici_registre) throws IOException {
+        RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
+        file.seek(inici_registre);
         c.codi = files.FileBinaryReaderInt(Main.ADRECA, dis);
         c.nom = files.FileBinaryReaderString(Main.ADRECA, dis);
         c.cognoms = files.FileBinaryReaderString(Main.ADRECA, dis);
@@ -149,7 +152,7 @@ public class ConsultarClients {
      * @throws IOException
      * @throws FileNotFoundException 
      */
-    static int Cantidad_Clientes(Main.Client c) throws IOException, FileNotFoundException {
+/*    static int Cantidad_Clientes(Main.Client c) throws IOException, FileNotFoundException {
         FileInputStream fis = new FileInputStream(Main.ADRECA);
         DataInputStream dis = new DataInputStream(fis);
         int numClients = 0;
@@ -162,5 +165,5 @@ public class ConsultarClients {
             //Final fitxer
         }
         return numClients;
-    }
+    }*/
 }

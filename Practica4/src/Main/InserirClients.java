@@ -3,6 +3,7 @@
  */
 package Main;
 
+import static Main.ConsultarClients.Llegir_Camps_Clients;
 import Utils.files;
 import Utils.utils;
 import java.io.DataInputStream;
@@ -10,6 +11,7 @@ import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 /**
  *
@@ -23,7 +25,7 @@ public class InserirClients {
      * @param adreca
      * @throws IOException 
      */
-    static void Dades_Client(Main.Client c) throws  IOException {
+    /*static void Dades_Client(Main.Client c) throws  IOException {
         demanarCodi(c);
         c.nom = utils.LlegirString("Nom: ");
         c.cognoms = utils.LlegirString("Cognom: ");
@@ -39,7 +41,7 @@ public class InserirClients {
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    static void demanarCodi(Main.Client c) throws FileNotFoundException, IOException {
+    /*static void demanarCodi(Main.Client c) throws FileNotFoundException, IOException {
         boolean trobat = true;
         int codiComprovar = 0;
         while(trobat){
@@ -57,7 +59,7 @@ public class InserirClients {
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    private static boolean validarCodi(int codiComprovar, Main.Client c) throws FileNotFoundException, IOException {
+    /*private static boolean validarCodi(int codiComprovar, Main.Client c) throws FileNotFoundException, IOException {
         FileInputStream fis = new FileInputStream(Main.ADRECA);
         DataInputStream dis = new DataInputStream(fis);
         boolean trobat = false;
@@ -78,7 +80,7 @@ public class InserirClients {
      * Demana dia, mes i any i pasa per el validador del utils, si torna true, està bé, si no es torna a preguntar dia, mes i any
      * @param c 
      */
-    static void demanarData(Main.Client c) {
+    /*static void demanarData(Main.Client c) {
         boolean correcto = false;
         while(!correcto){
             c.dia = utils.LlegirInt("Dia naixement:");
@@ -95,6 +97,9 @@ public class InserirClients {
      * @throws IOException 
      */
     static void Inserir(Main.Client c, String ADRECA) throws IOException {
+        RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
+        long inici_registre = file.length();
+        file.seek(file.length());
         files.FileBinaryWriterInt(ADRECA, c.codi, true);
         files.FileBinaryWriterString(ADRECA, c.nom, true);
         files.FileBinaryWriterString(ADRECA, c.cognoms, true);
@@ -104,5 +109,23 @@ public class InserirClients {
         files.FileBinaryWriterString(ADRECA, c.adreca_postal, true);
         files.FileBinaryWriterString(ADRECA, c.email, true);
         files.FileBinaryWriterBoolean(ADRECA, c.VIP, true);
+        AccesoAleatorio.guardarRegistros(inici_registre, c.codi);
+    }
+
+    private static int SeguentClient() throws FileNotFoundException, IOException {
+        FileInputStream fis = new FileInputStream(Main.ADRECA_INDEX);
+        DataInputStream dis = new DataInputStream(fis);
+        int num_client = 1;
+        try{
+            
+            while(true){
+                num_client = files.FileBinaryReaderInt(Main.ADRECA_INDEX, dis);
+            }
+
+        }catch(EOFException e){
+            //Final fitxer
+        }
+        return num_client;
     }
 }
+
