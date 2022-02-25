@@ -44,7 +44,6 @@ public class ConsultarClients {
         }
         System.out.println("");
     }*/
-
     /**
      * Busca el codi del client que es volia consultar i crida a una funció que
      * seguit els imprimirà per pantalla
@@ -54,19 +53,21 @@ public class ConsultarClients {
      * @throws IOException
      */
     static void Consultar_Codi(int codiConsulta, Main.Client c) throws IOException {
-        RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
-        int i = 1;
-        try {
-            while (true) {
-                Llegir_Camps_Clients(c,i);
-                if (c.codi == codiConsulta) {
-                    print_Clients(c);
-                    i++;
-                }
+        RandomAccessFile index = new RandomAccessFile(Main.ADRECA_INDEX, "rw");
+        int quantitatClients = AccesoAleatorio.num_Clients_Index();
+        long posByte = index.readLong();
+        for (int i = 0; i < quantitatClients; i++) {
+            int codi = index.readInt();
+            
+            if (codiConsulta == codi) {
+                posByte = index.readLong();
+
+            }else{
+                long readLong = index.readLong();
             }
-        } catch (EOFException e) {
-            //Final fitxer
         }
+        Llegir_Camps_Clients(c, posByte);
+        print_Clients(c);
     }
 
     /**
@@ -79,12 +80,12 @@ public class ConsultarClients {
      * @throws IOException
      */
     private static void Consultar_Linea(int lineaConsulta, Main.Client c) throws FileNotFoundException, IOException {
-           RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
+        RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
         try {
             int contador = 1;
             int i = 1;
             while (true) {
-                Llegir_Camps_Clients(c,i);
+                Llegir_Camps_Clients(c, i);
                 if (contador == lineaConsulta) {
                     print_Clients(c);
                     i++;
@@ -104,12 +105,12 @@ public class ConsultarClients {
      */
     static void leerFichero(Main.Client c) throws FileNotFoundException, IOException {
         RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
-        
+
         int i = 1;
         try {
             while (true) {
                 file.seek(i);
-                Llegir_Camps_Clients(c,i);
+                Llegir_Camps_Clients(c, i);
                 print_Clients(c);
                 i++;
             }
@@ -136,7 +137,7 @@ public class ConsultarClients {
         c.dia = file.readInt();
         c.mes = file.readInt();
         c.any = file.readInt();
-        c.adreca_postal =file.readUTF();
+        c.adreca_postal = file.readUTF();
         c.email = file.readUTF();
         c.VIP = file.readBoolean();
     }
@@ -168,12 +169,12 @@ public class ConsultarClients {
      * @throws FileNotFoundException
      */
     static int Cantidad_Clientes(Main.Client c) throws IOException, FileNotFoundException {
-      RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
+        RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
         int numClients = 0;
         try {
             int i = 1;
             while (true) {
-                Llegir_Camps_Clients(c,i);
+                Llegir_Camps_Clients(c, i);
                 numClients++;
                 i++;
             }
