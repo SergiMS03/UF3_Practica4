@@ -20,119 +20,133 @@ public class ConsultarClients {
 
     /**
      * Pregunta el codi del client que es vol consultar
-     * @throws IOException 
+     *
+     * @throws IOException
      */
-    /*static void Pregunta_Consulta_Codi(Main.Client c) throws IOException {
+    static void Pregunta_Consulta_Codi(Main.Client c) throws IOException {
         int codiConsulta = utils.LlegirInt("Quin es el codi que vols consultar: ");
         Consultar_Codi(codiConsulta, c);
         System.out.println("");
     }
-    
+
     /**
      * Pregunta la linea del fitxer que es vol consultar
+     *
      * @param c
-     * @throws IOException 
+     * @throws IOException
      */
     /*static void Pregunta_Consulta_Linea(Main.Client c) throws IOException {
         int numClients = Cantidad_Clientes(c);
-        if(numClients > 0){
+        if (numClients > 0) {
             System.out.println(numClients + " lineas disponibles");
             int lineaConsulta = utils.LlegirIntLimitat("Quina és la linea que vols consultar: ", 1, numClients);
             Consultar_Linea(lineaConsulta, c);
         }
         System.out.println("");
+    }*/
+
+    /**
+     * Busca el codi del client que es volia consultar i crida a una funció que
+     * seguit els imprimirà per pantalla
+     *
+     * @param buffer
+     * @param codiConsulta
+     * @throws IOException
+     */
+    static void Consultar_Codi(int codiConsulta, Main.Client c) throws IOException {
+        RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
+        int i = 1;
+        try {
+            while (true) {
+                Llegir_Camps_Clients(c,i);
+                if (c.codi == codiConsulta) {
+                    print_Clients(c);
+                    i++;
+                }
+            }
+        } catch (EOFException e) {
+            //Final fitxer
+        }
     }
 
     /**
-     * Busca el codi del client que es volia consultar i crida a una funció que seguit els imprimirà per pantalla
-     * @param buffer
-     * @param codiConsulta
-     * @throws IOException 
-     */
-/*    static void Consultar_Codi(int codiConsulta, Main.Client c) throws IOException {
-        FileInputStream fis = new FileInputStream(Main.ADRECA);
-        DataInputStream dis = new DataInputStream(fis);
-        try{
-            while(true){
-                Llegir_Camps_Clients(c, dis);
-                if(c.codi == codiConsulta){
-                    print_Clients(c);
-                }
-            }
-        }catch(EOFException e){
-            //Final fitxer
-        }
-    }
-    
-    /**
-     * Busca quants clients hi ha al fitxer que es volia consultar i crida a una funció que seguit els imprimirà per pantalla
+     * Busca quants clients hi ha al fitxer que es volia consultar i crida a una
+     * funció que seguit els imprimirà per pantalla
+     *
      * @param lineaConsulta
      * @param c
      * @throws FileNotFoundException
-     * @throws IOException 
+     * @throws IOException
      */
-/*    private static void Consultar_Linea(int lineaConsulta, Main.Client c) throws FileNotFoundException, IOException {
-        FileInputStream fis = new FileInputStream(Main.ADRECA);
-        DataInputStream dis = new DataInputStream(fis);
-        try{
+    private static void Consultar_Linea(int lineaConsulta, Main.Client c) throws FileNotFoundException, IOException {
+           RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
+        try {
             int contador = 1;
-            while(true){
-                Llegir_Camps_Clients(c, dis);
-                if(contador == lineaConsulta){
+            int i = 1;
+            while (true) {
+                Llegir_Camps_Clients(c,i);
+                if (contador == lineaConsulta) {
                     print_Clients(c);
+                    i++;
                 }
                 contador++;
             }
-        }catch(EOFException e){
+        } catch (EOFException e) {
             //Final fitxer
         }
     }
-    
-    /**
+
+    /*
      * Llegeix del fitxer fins que no hi ha més contingut i surt a través del catch
      * @param c
      * @throws FileNotFoundException
      * @throws IOException 
      */
-/*    static void leerFichero(Main.Client c) throws FileNotFoundException, IOException {
-        FileInputStream fis = new FileInputStream(Main.ADRECA);
-        DataInputStream dis = new DataInputStream(fis);
-        try{
-            while(true){
-                Llegir_Camps_Clients(c, dis);
+    static void leerFichero(Main.Client c) throws FileNotFoundException, IOException {
+        RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
+        
+        int i = 1;
+        try {
+            while (true) {
+                file.seek(i);
+                Llegir_Camps_Clients(c,i);
                 print_Clients(c);
+                i++;
             }
-        }catch(EOFException e){
+        } catch (EOFException e) {
             //Final fitxer
         }
         System.out.println("");
-    }*/
+    }
 
     /**
-     * Guarda a la clase clients cada camp consusultat a la seva respectiva variable
+     * Guarda a la clase clients cada camp consusultat a la seva respectiva
+     * variable
+     *
      * @param c
      * @param dis
-     * @throws IOException 
+     * @throws IOException
      */
-    static void Llegir_Camps_Clients(Main.Client c, DataInputStream dis, long inici_registre) throws IOException {
+    static void Llegir_Camps_Clients(Main.Client c, long inici_registre) throws IOException {
         RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
         file.seek(inici_registre);
-        c.codi = files.FileBinaryReaderInt(Main.ADRECA, dis);
-        c.nom = files.FileBinaryReaderString(Main.ADRECA, dis);
-        c.cognoms = files.FileBinaryReaderString(Main.ADRECA, dis);
-        c.dia = files.FileBinaryReaderInt(Main.ADRECA, dis);
-        c.mes = files.FileBinaryReaderInt(Main.ADRECA, dis);
-        c.any = files.FileBinaryReaderInt(Main.ADRECA, dis);
-        c.adreca_postal = files.FileBinaryReaderString(Main.ADRECA, dis);
-        c.email = files.FileBinaryReaderString(Main.ADRECA, dis);
-        c.VIP = files.FileBinaryReaderBoolean(Main.ADRECA, dis); 
+        c.codi = file.readInt();
+        c.nom = file.readUTF();
+        c.cognoms = file.readUTF();
+        c.dia = file.readInt();
+        c.mes = file.readInt();
+        c.any = file.readInt();
+        c.adreca_postal =file.readUTF();
+        c.email = file.readUTF();
+        c.VIP = file.readBoolean();
     }
-    
+
     /**
      * Imprimeix el que hi hagi guardad a les variables de la clase Client
-     * @param c 
+     *
+     * @param c
      */
-    static void print_Clients(Main.Client c){
+    static void print_Clients(Main.Client c) {
         System.out.print(c.codi + " ");
         System.out.print(c.nom + " ");
         System.out.print(c.cognoms + " ");
@@ -147,23 +161,23 @@ public class ConsultarClients {
 
     /**
      * Conta la cuantitat de clients que hi ha al fitxer
+     *
      * @param c
      * @return
      * @throws IOException
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException
      */
     static int Cantidad_Clientes(Main.Client c) throws IOException, FileNotFoundException {
-        FileInputStream fis = new FileInputStream(Main.ADRECA);
-        DataInputStream dis = new DataInputStream(fis);
+      RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
         int numClients = 0;
-        try{
-            int i = 0;
-            while(true){
-                Llegir_Camps_Clients(c, dis, i);
+        try {
+            int i = 1;
+            while (true) {
+                Llegir_Camps_Clients(c,i);
                 numClients++;
                 i++;
             }
-        }catch(EOFException e){
+        } catch (EOFException e) {
             //Final fitxer
         }
         return numClients;

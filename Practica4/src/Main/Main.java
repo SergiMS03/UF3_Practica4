@@ -1,12 +1,22 @@
 /*
 Fes un programa que permeti gestionar un fitxer binari de clients amb les
 següents operacions:
-X a) Alta d’un client (registrar un client que no existia abans al fitxer)
-X b) Consulta d’un client per posició
-X c) Consulta d’un client per codi
-d) Modificar un client
-e) Esborrar un client
-X f) Llistat de tots els clients
+xa) Alta d’un client (registrar un client que no existia abans al fitxer)
+b) Consulta d’un client per posició b) a) Accedeixi de forma directa a un registre segons la seva posició
+
+c) Consulta d’un client per codi b) Accedeixi de forma directa a un registre segons el seu codi
+d) Modificar un client d) No hagi de reconstruir el fitxer quan es modifica un registre
+e) Esborrar un client c) No hagi de reconstruir el fitxer quan s’esborra un registre
+
+xf) Llistat de tots els clients e) Llisti els clients ordenats per codi
+
+
+
+
+
+
+
+
  */
 package Main;
 
@@ -25,8 +35,8 @@ public class Main {
     public static final String ADRECA = "./clients.dat";
     public static final String ADRECA_INDEX = "./index.dat";
 
-
     static class Client {
+
         int codi;
         String nom;
         String cognoms;
@@ -40,11 +50,12 @@ public class Main {
 
     /**
      * Crida a les altres funcions que fan funcionar el programa
+     *
      * @param args
      * @throws ParseException
-     * @throws IOException 
+     * @throws IOException
      */
-    public static void main(String[] args) throws ParseException, IOException{
+    public static void main(String[] args) throws ParseException, IOException {
         Client c = new Client();
         files.IfNotExistCreateFile(ADRECA);
         files.IfNotExistCreateFile(ADRECA_INDEX);
@@ -67,13 +78,14 @@ public class Main {
         System.out.println("6- Llistar tots els clients");
         System.out.println("7- Llistar tots els clients ordenats per codi");
     }
-    
+
     /**
      * Switch que esculleix la opció del menú i crida a les altres funcions
+     *
      * @param c
      * @return
      * @throws ParseException
-     * @throws IOException 
+     * @throws IOException
      */
     private static int elegirOpc(Client c) throws ParseException, IOException {
         int opc = utils.LlegirIntLimitat("Escull una opció: ", 0, 7);
@@ -81,11 +93,11 @@ public class Main {
             case 0:
                 System.out.println("Tancant programa...");
                 break;
-            /*case 1:
+            case 1:
                 InserirClients.Dades_Client(c);
                 InserirClients.Inserir(c, ADRECA);
                 break;
-            case 2:
+            /*case 2:
                 ConsultarClients.Pregunta_Consulta_Linea(c);
                 break;
             case 3:
@@ -97,12 +109,9 @@ public class Main {
 
             case 5:
                 EsborrarClients.Esborrar_Client(c);
-                break;
+                break;*/
 
             case 6:
-                ConsultarClients.leerFichero(c);
-                break;*/
-            case 7:
                 AccesoAleatorio.Ordenar(c);
                 break;
         }
@@ -111,8 +120,9 @@ public class Main {
 
     /**
      * Cambia els noms dels fitxers que es pasin
+     *
      * @param ADRECA
-     * @param f 
+     * @param f
      */
     static void Renombrar(String ADRECA, File f) {
         File client_Original = new File(ADRECA);

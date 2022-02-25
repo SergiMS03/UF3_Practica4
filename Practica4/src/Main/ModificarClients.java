@@ -17,11 +17,13 @@ import java.io.IOException;
 public class ModificarClients {
 
     /**
-     * Crida a les funcions necessaries per esborrar un client segons la linea del fitxer
+     * Crida a les funcions necessaries per esborrar un client segons la linea
+     * del fitxer
+     *
      * @param c
-     * @throws IOException 
+     * @throws IOException
      */
-    /*static void Modificar_Client(Main.Client c) throws IOException {
+    static void Modificar_Client(Main.Client c) throws IOException {
         int esborrar = utils.LlegirInt("Quin client vols esborrar: ");
         final String ADRECA_AUX = "./auxiliar.dat";
         File f = new File(ADRECA_AUX);
@@ -31,28 +33,33 @@ public class ModificarClients {
     }
 
     /**
-     * Copia totes les lineas a un fitxer auxialiar.dat menys la que volem modificar, aquí es crida per omplir de nou un client i es segueix imprimint a partir d'aqui
+     * Copia totes les lineas a un fitxer auxialiar.dat menys la que volem
+     * modificar, aquí es crida per omplir de nou un client i es segueix
+     * imprimint a partir d'aqui
+     *
      * @param codiEsborrar
      * @param c
      * @param adreca
-     * @throws IOException 
+     * @throws IOException
      */
-    /*static void CopiantIEsborrant(int codiEsborrar, Main.Client c, String adreca) throws IOException {
+    static void CopiantIEsborrant(int codiEsborrar, Main.Client c, String adreca) throws IOException {
         FileInputStream fis = new FileInputStream(Main.ADRECA);
         DataInputStream dis = new DataInputStream(fis);
-        try{
-            while(true){
-                ConsultarClients.Llegir_Camps_Clients(c, dis);
-                if(c.codi != codiEsborrar){
+        int i = 1;
+        try {
+            while (true) {
+                ConsultarClients.Llegir_Camps_Clients(c, i);
+                i++;
+                if (c.codi != codiEsborrar) {
                     InserirClients.Inserir(c, adreca);
-                }
-                else{
+
+                } else {
                     InserirClients.Dades_Client(c);
                     InserirClients.Inserir(c, adreca);
                 }
             }
-        }catch(EOFException e){
+        } catch (EOFException e) {
             //Final fitxer
         }
-    }*/
+    }
 }

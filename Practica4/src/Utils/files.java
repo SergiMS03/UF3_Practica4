@@ -187,8 +187,8 @@ public class files {
     
     public static long FileBinaryReaderLong(final String adress, DataInputStream dis) throws IOException {
         //declare_FIS_DIS(adress);
-        long readingInt = dis.readLong();
-        return readingInt;
+        long readingLong = dis.readLong();
+        return readingLong;
     }
     
     public static String FileBinaryReaderString(final String adress, DataInputStream dis) throws IOException {

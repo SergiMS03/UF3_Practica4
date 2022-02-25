@@ -20,12 +20,14 @@ import java.io.RandomAccessFile;
 public class InserirClients {
 
     /**
-     * Demana les dades dels clients per afegir i crida a algunes funcions per validar les dades
+     * Demana les dades dels clients per afegir i crida a algunes funcions per
+     * validar les dades
+     *
      * @param c
      * @param adreca
-     * @throws IOException 
+     * @throws IOException
      */
-    /*static void Dades_Client(Main.Client c) throws  IOException {
+    static void Dades_Client(Main.Client c) throws IOException {
         demanarCodi(c);
         c.nom = utils.LlegirString("Nom: ");
         c.cognoms = utils.LlegirString("Cognom: ");
@@ -34,55 +36,62 @@ public class InserirClients {
         c.email = utils.LlegirString("EMail: ");
         c.VIP = utils.LlegirBoolean("Vip (S/N): ");
     }
-    
+
     /**
      * Demana codi cada cop que el codi inserit ja existeix
+     *
      * @param c
      * @throws FileNotFoundException
-     * @throws IOException 
+     * @throws IOException
      */
-    /*static void demanarCodi(Main.Client c) throws FileNotFoundException, IOException {
+    static void demanarCodi(Main.Client c) throws FileNotFoundException, IOException {
         boolean trobat = true;
         int codiComprovar = 0;
-        while(trobat){
+        while (trobat) {
             codiComprovar = utils.LlegirInt("Codi: ");
             trobat = validarCodi(codiComprovar, c);
         }
         c.codi = codiComprovar;
     }
-    
+
     /**
-     * Comprova que el codiComprovar sigui diferent a els diferents codis que hi ha estan als fitxers, si no existeixen dades al fitxer no comprova
+     * Comprova que el codiComprovar sigui diferent a els diferents codis que hi
+     * ha estan als fitxers, si no existeixen dades al fitxer no comprova
+     *
      * @param codiComprovar
      * @param c
      * @return
      * @throws FileNotFoundException
-     * @throws IOException 
+     * @throws IOException
      */
-    /*private static boolean validarCodi(int codiComprovar, Main.Client c) throws FileNotFoundException, IOException {
-        FileInputStream fis = new FileInputStream(Main.ADRECA);
-        DataInputStream dis = new DataInputStream(fis);
+    private static boolean validarCodi(int codiComprovar, Main.Client c) throws FileNotFoundException, IOException {
+        //RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
+        RandomAccessFile index = new RandomAccessFile(Main.ADRECA_INDEX, "rw");
         boolean trobat = false;
-        try{
-            while(true){
-                ConsultarClients.Llegir_Camps_Clients(c, dis);
-                if(codiComprovar == c.codi){
+        int numClients = AccesoAleatorio.num_Clients_Index();
+        long posicio_inici;
+        int codi;
+        for (int j = 0; j < numClients; j++) {
+                codi = index.readInt();
+                posicio_inici = index.readLong();
+                ConsultarClients.Llegir_Camps_Clients(c, posicio_inici);
+
+                if (codiComprovar == c.codi) {
                     trobat = true;
                 }
             }
-        }catch(EOFException e){
-            //Final fitxer
-        }
         return trobat;
     }
 
     /**
-     * Demana dia, mes i any i pasa per el validador del utils, si torna true, està bé, si no es torna a preguntar dia, mes i any
-     * @param c 
+     * Demana dia, mes i any i pasa per el validador del utils, si torna true,
+     * està bé, si no es torna a preguntar dia, mes i any
+     *
+     * @param c
      */
-    /*static void demanarData(Main.Client c) {
+    static void demanarData(Main.Client c) {
         boolean correcto = false;
-        while(!correcto){
+        while (!correcto) {
             c.dia = utils.LlegirInt("Dia naixement:");
             c.mes = utils.LlegirInt("Mes naixement:");
             c.any = utils.LlegirInt("Any naixement:");
@@ -91,10 +100,12 @@ public class InserirClients {
     }
 
     /**
-     * Insereix les dades que hi han guardades a la clase client que s'ha omplert avants a Dades_Client
+     * Insereix les dades que hi han guardades a la clase client que s'ha
+     * omplert avants a Dades_Client
+     *
      * @param c
      * @param ADRECA
-     * @throws IOException 
+     * @throws IOException
      */
     static void Inserir(Main.Client c, String ADRECA) throws IOException {
         RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
@@ -116,16 +127,15 @@ public class InserirClients {
         FileInputStream fis = new FileInputStream(Main.ADRECA_INDEX);
         DataInputStream dis = new DataInputStream(fis);
         int num_client = 1;
-        try{
-            
-            while(true){
+        try {
+
+            while (true) {
                 num_client = files.FileBinaryReaderInt(Main.ADRECA_INDEX, dis);
             }
 
-        }catch(EOFException e){
+        } catch (EOFException e) {
             //Final fitxer
         }
         return num_client;
     }
 }
-
