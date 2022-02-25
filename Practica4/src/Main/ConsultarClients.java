@@ -152,18 +152,20 @@ public class ConsultarClients {
      * @throws IOException
      * @throws FileNotFoundException 
      */
-/*    static int Cantidad_Clientes(Main.Client c) throws IOException, FileNotFoundException {
+    static int Cantidad_Clientes(Main.Client c) throws IOException, FileNotFoundException {
         FileInputStream fis = new FileInputStream(Main.ADRECA);
         DataInputStream dis = new DataInputStream(fis);
         int numClients = 0;
         try{
+            int i = 0;
             while(true){
-                Llegir_Camps_Clients(c, dis);
+                Llegir_Camps_Clients(c, dis, i);
                 numClients++;
+                i++;
             }
         }catch(EOFException e){
             //Final fitxer
         }
         return numClients;
-    }*/
+    }
 }
