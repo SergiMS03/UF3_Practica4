@@ -5,9 +5,6 @@ package Main;
 
 import Utils.files;
 import Utils.utils;
-import java.io.DataInputStream;
-import java.io.EOFException;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -67,23 +64,42 @@ public class InserirClients {
         //RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
         RandomAccessFile index = new RandomAccessFile(Main.ADRECA_INDEX, "rw");
         boolean trobat = false;
-        int numClients = AccesoAleatorio.num_Clients_Index();
+        int numClients = GestionIndex.num_Clients_Index();
         boolean actiu;
-        long posicio_inici;
-        int codi;
-        for (int j = 0; j < numClients; j++) {
+        //long posicio_inici;
+        int j = 0;
+        while (j < numClients && !trobat) {
             actiu = index.readBoolean();
-            if (actiu) {
-                codi = index.readInt();
-                posicio_inici = index.readLong();
-                ConsultarClients.Llegir_Camps_Clients(c, posicio_inici);
-            }
-
+            j = Comparacio_Codis(actiu, c, index, j);
             if (codiComprovar == c.codi) {
                 trobat = true;
             }
         }
         return trobat;
+    }
+
+    /**
+     * S'encarrega de comparar els codis que es pasen a validar codi
+     * @param actiu
+     * @param c
+     * @param index
+     * @param j
+     * @return
+     * @throws IOException 
+     */
+    static int Comparacio_Codis(boolean actiu, Main.Client c, RandomAccessFile index, int j) throws IOException {
+        long posicio_inici;
+        if (actiu) {
+            c.codi = index.readInt();
+            posicio_inici = index.readLong();
+            ConsultarClients.Llegir_Camps_Clients(c, posicio_inici);
+            j++;
+        }
+        else{
+            index.readInt();
+            index.readLong();
+        }
+        return j;
     }
 
     /**
@@ -108,6 +124,7 @@ public class InserirClients {
      *
      * @param c
      * @param ADRECA
+     * @return 
      * @throws IOException
      */
     public static long Inserir(Main.Client c, String ADRECA) throws IOException {
@@ -123,6 +140,7 @@ public class InserirClients {
         files.FileBinaryWriterString(ADRECA, c.adreca_postal, true);
         files.FileBinaryWriterString(ADRECA, c.email, true);
         files.FileBinaryWriterBoolean(ADRECA, c.VIP, true);
+        System.out.println("");
         return inici_registre;
     }
 

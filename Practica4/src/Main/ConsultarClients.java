@@ -3,11 +3,7 @@
  */
 package Main;
 
-import Utils.files;
 import Utils.utils;
-import java.io.DataInputStream;
-import java.io.EOFException;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -36,7 +32,7 @@ public class ConsultarClients {
      * @throws IOException
      */
     static void Pregunta_Consulta_Linea(Main.Client c) throws IOException {
-        int quantitatClients = AccesoAleatorio.num_Clients_Index();
+        int quantitatClients = GestionIndex.num_Clients_Index();
         if (quantitatClients > 0) {
             System.out.println(quantitatClients + " lineas disponibles");
             int lineaConsulta = utils.LlegirIntLimitat("Quina és la linea que vols consultar: ", 1, quantitatClients);
@@ -54,7 +50,7 @@ public class ConsultarClients {
      */
     static void Consultar_Codi(int codiConsulta, Main.Client c) throws IOException {
         RandomAccessFile index = new RandomAccessFile(Main.ADRECA_INDEX, "rw");
-        int quantitatClients = AccesoAleatorio.num_Clients_Index();
+        int quantitatClients = GestionIndex.num_Clients_Index();
         long posByte = -1;
         int i = 0;
         while (i < quantitatClients) {
@@ -71,13 +67,7 @@ public class ConsultarClients {
                 i++;
             }
         }
-        if(posByte == -1){
-            System.out.println("No s'ha trobat la linea que es buscaba");
-        }
-        else{
-            Llegir_Camps_Clients(c, posByte);
-            print_Clients(c);
-        }
+        Resultado_Consulta(posByte, c);
     }
 
     /**
@@ -95,18 +85,28 @@ public class ConsultarClients {
         int i = 1;
         while (i <= quantitatClients) {
             boolean actiu = index.readBoolean();
-            int codi = index.readInt();
+            index.readInt();
             if (lineaConsulta == i && actiu) {
                 posByte = index.readLong();
                 i++;
             }else if(!actiu){
-                long readLong = index.readLong();
+                index.readLong();
             }
             else{
                 index.readLong();
                 i++;
             }
         }
+        Resultado_Consulta(posByte, c);
+    }
+
+    /**
+     * Comprova si s'ha trobat resultat, i depenent d'aixó treu un missatge o imprimeix el client que es buscaba
+     * @param posByte
+     * @param c
+     * @throws IOException 
+     */
+    static void Resultado_Consulta(long posByte, Main.Client c) throws IOException {
         if(posByte == -1){
             System.out.println("No s'ha trobat la linea que es buscaba");
         }
@@ -114,7 +114,6 @@ public class ConsultarClients {
             Llegir_Camps_Clients(c, posByte);
             print_Clients(c);
         }
-        
     }
 
     /**
@@ -157,27 +156,4 @@ public class ConsultarClients {
         System.out.println(" ");
     }
 
-    /**
-     * Conta la cuantitat de clients que hi ha al fitxer
-     *
-     * @param c
-     * @return
-     * @throws IOException
-     * @throws FileNotFoundException
-     */
-    static int Cantidad_Clientes(Main.Client c) throws IOException, FileNotFoundException {
-        RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
-        int numClients = 0;
-        try {
-            int i = 1;
-            while (true) {
-                Llegir_Camps_Clients(c, i);
-                numClients++;
-                i++;
-            }
-        } catch (EOFException e) {
-            //Final fitxer
-        }
-        return numClients;
-    }
 }

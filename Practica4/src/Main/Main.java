@@ -14,7 +14,6 @@ package Main;
 
 import Utils.files;
 import Utils.utils;
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -29,7 +28,6 @@ public class Main {
 
   
     static class Client {
-
         int codi;
         String nom;
         String cognoms;
@@ -88,7 +86,7 @@ public class Main {
             case 1:
                 InserirClients.Dades_Client(c);
                 long inici_registre = InserirClients.Inserir(c, ADRECA);
-                AccesoAleatorio.guardarRegistros(inici_registre, c.codi);
+                GestionIndex.guardarRegistros(inici_registre, c.codi);
                 break;
             case 2:
                 ConsultarClients.Pregunta_Consulta_Linea(c);
@@ -101,25 +99,12 @@ public class Main {
                 break;
 
             case 5:
-                EsborrarClients.Esborrar_Client(c);
+                EsborrarClients.Pregunta_Esborrar_Client(c);
                 break;
             case 6:
-                AccesoAleatorio.Ordenar(c);
+                Ordenacions.Ordenar(c);
                 break;
         }
         return opc;
     }
-
-    /**
-     * Cambia els noms dels fitxers que es pasin
-     *
-     * @param ADRECA
-     * @param f
-     */
-    static void Renombrar(String ADRECA, File f) {
-        File client_Original = new File(ADRECA);
-        client_Original.delete();
-        f.renameTo(client_Original);
-    }
-
 }
