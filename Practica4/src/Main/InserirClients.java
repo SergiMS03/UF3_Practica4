@@ -3,7 +3,6 @@
  */
 package Main;
 
-import static Main.ConsultarClients.Llegir_Camps_Clients;
 import Utils.files;
 import Utils.utils;
 import java.io.DataInputStream;
@@ -69,17 +68,21 @@ public class InserirClients {
         RandomAccessFile index = new RandomAccessFile(Main.ADRECA_INDEX, "rw");
         boolean trobat = false;
         int numClients = AccesoAleatorio.num_Clients_Index();
+        boolean actiu;
         long posicio_inici;
         int codi;
         for (int j = 0; j < numClients; j++) {
+            actiu = index.readBoolean();
+            if (actiu) {
                 codi = index.readInt();
                 posicio_inici = index.readLong();
                 ConsultarClients.Llegir_Camps_Clients(c, posicio_inici);
-
-                if (codiComprovar == c.codi) {
-                    trobat = true;
-                }
             }
+
+            if (codiComprovar == c.codi) {
+                trobat = true;
+            }
+        }
         return trobat;
     }
 
@@ -123,19 +126,4 @@ public class InserirClients {
         AccesoAleatorio.guardarRegistros(inici_registre, c.codi);
     }
 
-    private static int SeguentClient() throws FileNotFoundException, IOException {
-        FileInputStream fis = new FileInputStream(Main.ADRECA_INDEX);
-        DataInputStream dis = new DataInputStream(fis);
-        int num_client = 1;
-        try {
-
-            while (true) {
-                num_client = files.FileBinaryReaderInt(Main.ADRECA_INDEX, dis);
-            }
-
-        } catch (EOFException e) {
-            //Final fitxer
-        }
-        return num_client;
-    }
 }

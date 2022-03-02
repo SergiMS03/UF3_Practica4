@@ -3,6 +3,8 @@
  */
 package Main;
 
+import static Main.ConsultarClients.Llegir_Camps_Clients;
+import Utils.files;
 import Utils.utils;
 import java.io.DataInputStream;
 import java.io.EOFException;
@@ -28,8 +30,7 @@ public class EsborrarClients {
         final String ADRECA_AUX = "./auxiliar.dat";
         File f = new File(ADRECA_AUX);
         f.createNewFile();
-        CopiantIEsborrant(esborrar, c, ADRECA_AUX);
-        Main.Renombrar(Main.ADRECA, f);
+        Esborrar(esborrar, c, ADRECA_AUX);
     }
 
     /**
@@ -40,19 +41,28 @@ public class EsborrarClients {
      * @param adreca
      * @throws IOException
      */
-    static void CopiantIEsborrant(int codiEsborrar, Main.Client c, String adreca) throws IOException {
-           RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
-        int i = 1;
-        try {
-            while (true) {
-                ConsultarClients.Llegir_Camps_Clients(c,i);
+    static void Esborrar(int codiEsborrar, Main.Client c, String adreca) throws IOException {
+        RandomAccessFile index = new RandomAccessFile(Main.ADRECA_INDEX, "rw");
+        int quantitatClients = AccesoAleatorio.num_Clients_Index();
+        boolean actiu;
+        long posByte = 0;
+        int i = 0;
+        int posicionCliente = 0;
+        while ( i < quantitatClients) {
+            actiu = index.readBoolean();
+            int codi = index.readInt();
+            posByte = index.readLong(); 
+            if (codiEsborrar == codi && actiu) {
+                long posicion_Bool = posicionCliente * 13;//i (num vegades que hem fet el bucle) 13 (tamany de boolean + int + long)
+                index.seek(posicion_Bool);
+                index.writeBoolean(false);
                 i++;
-                if (c.codi != codiEsborrar) {
-                    InserirClients.Inserir(c, adreca);
-                }
+            }else if(!actiu){
+                //Si esta esborrat no conta com client, no sumem
+            }else{
+                i++;
             }
-        } catch (EOFException e) {
-            //Final fitxer
+            posicionCliente++;
         }
     }
 }

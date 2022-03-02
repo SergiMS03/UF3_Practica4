@@ -55,19 +55,29 @@ public class ConsultarClients {
     static void Consultar_Codi(int codiConsulta, Main.Client c) throws IOException {
         RandomAccessFile index = new RandomAccessFile(Main.ADRECA_INDEX, "rw");
         int quantitatClients = AccesoAleatorio.num_Clients_Index();
-        long posByte = 0;
-        for (int i = 0; i < quantitatClients; i++) {
+        long posByte = -1;
+        int i = 0;
+        while (i < quantitatClients) {
+            boolean actiu = index.readBoolean();
             int codi = index.readInt();
-            
-            if (codiConsulta == codi) {
+            if (codiConsulta == codi && actiu) {
                 posByte = index.readLong();
-
-            }else{
+                i++;
+            }else if(!actiu){
                 long readLong = index.readLong();
             }
+            else{
+                index.readLong();
+                i++;
+            }
         }
-        Llegir_Camps_Clients(c, posByte);
-        print_Clients(c);
+        if(posByte == -1){
+            System.out.println("No s'ha trobat la linea que es buscaba");
+        }
+        else{
+            Llegir_Camps_Clients(c, posByte);
+            print_Clients(c);
+        }
     }
 
     /**
@@ -81,43 +91,30 @@ public class ConsultarClients {
      */
     private static void Consultar_Linea(int lineaConsulta, Main.Client c, int quantitatClients) throws FileNotFoundException, IOException {
         RandomAccessFile index = new RandomAccessFile(Main.ADRECA_INDEX, "rw");
-        long posByte = 0;
-        for (int i = 1; i <= lineaConsulta && i <= quantitatClients; i++) {
+        long posByte = -1;
+        int i = 1;
+        while (i <= quantitatClients) {
+            boolean actiu = index.readBoolean();
             int codi = index.readInt();
-            
-            if (lineaConsulta == i) {
+            if (lineaConsulta == i && actiu) {
                 posByte = index.readLong();
-
-            }else{
+                i++;
+            }else if(!actiu){
                 long readLong = index.readLong();
             }
-        }
-        Llegir_Camps_Clients(c, posByte);
-        print_Clients(c);
-    }
-    
-
-    /*
-     * Llegeix del fitxer fins que no hi ha més contingut i surt a través del catch
-     * @param c
-     * @throws FileNotFoundException
-     * @throws IOException 
-     */
-    static void leerFichero(Main.Client c) throws FileNotFoundException, IOException {
-        RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
-
-        int i = 1;
-        try {
-            while (true) {
-                file.seek(i);
-                Llegir_Camps_Clients(c, i);
-                print_Clients(c);
+            else{
+                index.readLong();
                 i++;
             }
-        } catch (EOFException e) {
-            //Final fitxer
         }
-        System.out.println("");
+        if(posByte == -1){
+            System.out.println("No s'ha trobat la linea que es buscaba");
+        }
+        else{
+            Llegir_Camps_Clients(c, posByte);
+            print_Clients(c);
+        }
+        
     }
 
     /**

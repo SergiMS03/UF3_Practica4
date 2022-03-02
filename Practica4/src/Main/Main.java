@@ -98,10 +98,9 @@ public class Main {
                 ModificarClients.Modificar_Client(c);
                 break;
 
-            /*case 5:
+            case 5:
                 EsborrarClients.Esborrar_Client(c);
-                break;*/
-
+                break;
             case 6:
                 AccesoAleatorio.Ordenar(c);
                 break;

@@ -22,12 +22,13 @@ import java.io.RandomAccessFile;
 public class AccesoAleatorio {
 
     static class Index {
-
+        boolean actiu;
         int codi;
         long inici_registre;
     }
 
     public static void guardarRegistros(long inici_registre, int codi) throws FileNotFoundException, IOException {
+        files.FileBinaryWriterBoolean(ADRECA_INDEX, true, true);
         files.FileBinaryWriterInt(Main.ADRECA_INDEX, codi, true);
         files.FileBinaryWriterLong(Main.ADRECA_INDEX, inici_registre, true);
     }
@@ -37,10 +38,12 @@ public class AccesoAleatorio {
         int numClients = 0;
         try {
             while (true) {
+                boolean actiu = llegirClients.readBoolean();
                 int codi = llegirClients.readInt();
                 long posByte = llegirClients.readLong();
-                numClients++;
-
+                if(actiu){
+                    numClients++;
+                }
             }
         } catch (EOFException e) {
             //Final fitxer
@@ -76,10 +79,19 @@ public class AccesoAleatorio {
     public static void llenar_Index_Array(Index Index_Array[]) throws FileNotFoundException, IOException {
         RandomAccessFile llegirClients = new RandomAccessFile(ADRECA_INDEX, "r");
         try {
-            for (int i = 0; i < Index_Array.length; i++) {
+            int i = 0;
+            while (i < Index_Array.length) {
                 Index_Array[i] = new Index();
-                Index_Array[i].codi = llegirClients.readInt();
-                Index_Array[i].inici_registre = llegirClients.readLong();
+                Index_Array[i].actiu = llegirClients.readBoolean();
+                if (Index_Array[i].actiu) {
+                    Index_Array[i].codi = llegirClients.readInt();
+                    Index_Array[i].inici_registre = llegirClients.readLong();
+                    i++;
+                }
+                else{
+                    llegirClients.readInt();
+                    llegirClients.readLong();
+                }
             }
         } catch (EOFException e) {
             //Final fitxer
