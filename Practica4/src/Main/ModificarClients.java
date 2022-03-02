@@ -24,6 +24,9 @@ public class ModificarClients {
      * @param c
      * @throws IOException
      */
+    
+    
+    //demana quin client vols modificar i la linea concreta que vols modificar
     static void Modificar_Client(Main.Client c) throws IOException {
         int quantitatClients = AccesoAleatorio.num_Clients_Index();
         if(quantitatClients > 0){
@@ -67,7 +70,8 @@ public class ModificarClients {
             System.out.println("No hi han clients per modificar");
         }
     }
-    
+        
+    //modifica la posició que has demanat
         static void ModificarPosicioRegistre(int codiModificar, Main.Client c, long inici_registre) throws IOException {
         RandomAccessFile index = new RandomAccessFile(Main.ADRECA_INDEX, "rw");
         int quantitatClients = AccesoAleatorio.num_Clients_Index();
@@ -93,7 +97,7 @@ public class ModificarClients {
             posicionCliente++;
         }
     }
-    
+    //mostra el menu de la modificació
     private static void menu_modificacio() {
         System.out.println("1- Modificar Codi");
         System.out.println("2- Modificar Nom");
