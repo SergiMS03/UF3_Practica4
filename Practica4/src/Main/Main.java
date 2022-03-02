@@ -23,10 +23,11 @@ import java.text.ParseException;
  * @author SergiMS03 i marsanbla
  */
 public class Main {
-
+//rutes on es guarden els fitxers
     public static final String ADRECA = "./clients.dat";
     public static final String ADRECA_INDEX = "./index.dat";
 
+  
     static class Client {
 
         int codi;
