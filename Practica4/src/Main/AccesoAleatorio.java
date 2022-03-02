@@ -86,6 +86,9 @@ public class AccesoAleatorio {
                 if (Index_Array[i].actiu) {
                     Index_Array[i].codi = llegirClients.readInt();
                     Index_Array[i].inici_registre = llegirClients.readLong();
+                    System.out.print("Actiu: "+Index_Array[i].actiu);
+                    System.out.print(" Codi: "+Index_Array[i].codi);
+                    System.out.println(" Inici_R: "+Index_Array[i].inici_registre);
                     i++;
                 }
                 else{

@@ -110,7 +110,7 @@ public class InserirClients {
      * @param ADRECA
      * @throws IOException
      */
-    static void Inserir(Main.Client c, String ADRECA) throws IOException {
+    public static long Inserir(Main.Client c, String ADRECA) throws IOException {
         RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
         long inici_registre = file.length();
         file.seek(file.length());
@@ -123,7 +123,7 @@ public class InserirClients {
         files.FileBinaryWriterString(ADRECA, c.adreca_postal, true);
         files.FileBinaryWriterString(ADRECA, c.email, true);
         files.FileBinaryWriterBoolean(ADRECA, c.VIP, true);
-        AccesoAleatorio.guardarRegistros(inici_registre, c.codi);
+        return inici_registre;
     }
 
 }

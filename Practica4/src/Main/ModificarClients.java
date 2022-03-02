@@ -9,6 +9,7 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 
 /**
  *
@@ -24,35 +25,84 @@ public class ModificarClients {
      * @throws IOException
      */
     static void Modificar_Client(Main.Client c) throws IOException {
-        
-        int esborrar = utils.LlegirInt("Quin client vols esborrar: ");
-        int MenuModificar= utils.LlegirIntLimitat("Quina dada vols modificar?", 1, 7);
-        switch (MenuModificar) {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
+        int quantitatClients = AccesoAleatorio.num_Clients_Index();
+        if(quantitatClients > 0){
+            int modificar = utils.LlegirInt("Quin client vols modificar: ");
+            ConsultarClients.Consultar_Codi(modificar, c);
+            int MenuModificar = 0;
+            do{
+                menu_modificacio();
+                MenuModificar = utils.LlegirIntLimitat("Quina dada vols modificar?", 0, 7);
+                switch (MenuModificar){
+                    case 0:
+                        System.out.println("Client modificat correctament");
+                        break;
+                    case 1:
+                        InserirClients.demanarCodi(c);
+                        break;
+                    case 2:
+                        c.nom = utils.LlegirString("Insereix el nom: ");
+                        break;
+                    case 3:
+                        c.cognoms = utils.LlegirString("Insereix el cognom: ");
+                        break;
+                    case 4:
+                        InserirClients.demanarData(c);
+                        break;
+                    case 5:
+                        c.adreca_postal = utils.LlegirString("Insereix adreça: ");
+                        break;
+                    case 6:
+                        c.email = utils.LlegirString("Insereix el mail: ");
+                        break;
+                    case 7:
+                        c.VIP = utils.LlegirBoolean("VIP (S/N): ");
+                        break;
+                }
+            }while(MenuModificar != 0);
+            long inici_registre = InserirClients.Inserir(c, Main.ADRECA);
+            ModificarPosicioRegistre(modificar, c, inici_registre);
         }
-        
+        else{
+            System.out.println("No hi han clients per modificar");
+        }
     }
-    private static void imprimirMenu() {
+    
+        static void ModificarPosicioRegistre(int codiModificar, Main.Client c, long inici_registre) throws IOException {
+        RandomAccessFile index = new RandomAccessFile(Main.ADRECA_INDEX, "rw");
+        int quantitatClients = AccesoAleatorio.num_Clients_Index();
+        boolean actiu;
+        long posByte = 0;
+        int i = 0;
+        int posicionCliente = 0;
+        while ( i < quantitatClients) {
+            actiu = index.readBoolean();
+            int codi = index.readInt();
+            posByte = index.readLong(); 
+            if (codiModificar == codi && actiu) {
+                long posicion_mod = (posicionCliente * 13) + 1;//i (num vegades que hem fet el bucle) 13 (tamany de boolean + int + long) + 1 del bool del client que volem modificar
+                index.seek(posicion_mod);
+                index.writeInt(c.codi);
+                index.writeLong(inici_registre);
+                i++;
+            }else if(!actiu){
+                //Si esta esborrat no conta com client, no sumem
+            }else{
+                i++;
+            }
+            posicionCliente++;
+        }
+    }
+    
+    private static void menu_modificacio() {
         System.out.println("1- Modificar Codi");
         System.out.println("2- Modificar Nom");
         System.out.println("3- Modificar Cognom");
         System.out.println("4- Modificar data");
         System.out.println("5- Modificar adreça");
-        System.out.println("6- Modificar mail");
-        System.out.println("7-Modificar Mail");
+        System.out.println("6- Modificar Mail");
+        System.out.println("7-Modificar VIP");
+        System.out.println("0- Sortir");
     }
 
 }

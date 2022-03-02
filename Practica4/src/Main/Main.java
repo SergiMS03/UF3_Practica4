@@ -86,7 +86,8 @@ public class Main {
                 break;
             case 1:
                 InserirClients.Dades_Client(c);
-                InserirClients.Inserir(c, ADRECA);
+                long inici_registre = InserirClients.Inserir(c, ADRECA);
+                AccesoAleatorio.guardarRegistros(inici_registre, c.codi);
                 break;
             case 2:
                 ConsultarClients.Pregunta_Consulta_Linea(c);
