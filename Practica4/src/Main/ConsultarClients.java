@@ -35,15 +35,15 @@ public class ConsultarClients {
      * @param c
      * @throws IOException
      */
-    /*static void Pregunta_Consulta_Linea(Main.Client c) throws IOException {
-        int numClients = Cantidad_Clientes(c);
-        if (numClients > 0) {
-            System.out.println(numClients + " lineas disponibles");
-            int lineaConsulta = utils.LlegirIntLimitat("Quina és la linea que vols consultar: ", 1, numClients);
-            Consultar_Linea(lineaConsulta, c);
+    static void Pregunta_Consulta_Linea(Main.Client c) throws IOException {
+        int quantitatClients = AccesoAleatorio.num_Clients_Index();
+        if (quantitatClients > 0) {
+            System.out.println(quantitatClients + " lineas disponibles");
+            int lineaConsulta = utils.LlegirIntLimitat("Quina és la linea que vols consultar: ", 1, quantitatClients);
+            Consultar_Linea(lineaConsulta, c, quantitatClients);
         }
         System.out.println("");
-    }*/
+    }
     /**
      * Busca el codi del client que es volia consultar i crida a una funció que
      * seguit els imprimirà per pantalla
@@ -55,7 +55,7 @@ public class ConsultarClients {
     static void Consultar_Codi(int codiConsulta, Main.Client c) throws IOException {
         RandomAccessFile index = new RandomAccessFile(Main.ADRECA_INDEX, "rw");
         int quantitatClients = AccesoAleatorio.num_Clients_Index();
-        long posByte = index.readLong();
+        long posByte = 0;
         for (int i = 0; i < quantitatClients; i++) {
             int codi = index.readInt();
             
@@ -79,23 +79,23 @@ public class ConsultarClients {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    private static void Consultar_Linea(int lineaConsulta, Main.Client c) throws FileNotFoundException, IOException {
-        RandomAccessFile file = new RandomAccessFile(Main.ADRECA, "rw");
-        try {
-            int contador = 1;
-            int i = 1;
-            while (true) {
-                Llegir_Camps_Clients(c, i);
-                if (contador == lineaConsulta) {
-                    print_Clients(c);
-                    i++;
-                }
-                contador++;
+    private static void Consultar_Linea(int lineaConsulta, Main.Client c, int quantitatClients) throws FileNotFoundException, IOException {
+        RandomAccessFile index = new RandomAccessFile(Main.ADRECA_INDEX, "rw");
+        long posByte = 0;
+        for (int i = 1; i <= lineaConsulta && i <= quantitatClients; i++) {
+            int codi = index.readInt();
+            
+            if (lineaConsulta == i) {
+                posByte = index.readLong();
+
+            }else{
+                long readLong = index.readLong();
             }
-        } catch (EOFException e) {
-            //Final fitxer
         }
+        Llegir_Camps_Clients(c, posByte);
+        print_Clients(c);
     }
+    
 
     /*
      * Llegeix del fitxer fins que no hi ha més contingut i surt a través del catch

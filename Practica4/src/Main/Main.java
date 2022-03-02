@@ -2,22 +2,14 @@
 Fes un programa que permeti gestionar un fitxer binari de clients amb les
 següents operacions:
 xa) Alta d’un client (registrar un client que no existia abans al fitxer)
-b) Consulta d’un client per posició b) a) Accedeixi de forma directa a un registre segons la seva posició
+xb) Consulta d’un client per posició b) a) Accedeixi de forma directa a un registre segons la seva posició
 
-c) Consulta d’un client per codi b) Accedeixi de forma directa a un registre segons el seu codi
+xc) Consulta d’un client per codi b) Accedeixi de forma directa a un registre segons el seu codi
 d) Modificar un client d) No hagi de reconstruir el fitxer quan es modifica un registre
 e) Esborrar un client c) No hagi de reconstruir el fitxer quan s’esborra un registre
 
 xf) Llistat de tots els clients e) Llisti els clients ordenats per codi
-
-
-
-
-
-
-
-
- */
+*/
 package Main;
 
 import Utils.files;
@@ -75,8 +67,7 @@ public class Main {
         System.out.println("3- Consulta codi");
         System.out.println("4- Modificar un client");
         System.out.println("5- Esborrar client");
-        System.out.println("6- Llistar tots els clients");
-        System.out.println("7- Llistar tots els clients ordenats per codi");
+        System.out.println("6- Llistar tots els clients ordenats per codi");
     }
 
     /**
@@ -97,7 +88,7 @@ public class Main {
                 InserirClients.Dades_Client(c);
                 InserirClients.Inserir(c, ADRECA);
                 break;
-            /*case 2:
+            case 2:
                 ConsultarClients.Pregunta_Consulta_Linea(c);
                 break;
             case 3:
@@ -107,7 +98,7 @@ public class Main {
                 ModificarClients.Modificar_Client(c);
                 break;
 
-            case 5:
+            /*case 5:
                 EsborrarClients.Esborrar_Client(c);
                 break;*/
 
